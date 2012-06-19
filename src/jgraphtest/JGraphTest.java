@@ -15,12 +15,12 @@ public class JGraphTest {
         graph.addVertex(v2);
         graph.addVertex(v3);
         graph.addVertex(v4);
-        // Add edges of cost 10 between verticies
-        graph.addEdge(v1, v2, 10);
-        graph.addEdge(v1, v3, 10);
-        graph.addEdge(v2, v3, 10);
-        graph.addEdge(v3, v4, 10);
-        graph.consoleOutput();
-
+        // Add edges verticies
+        graph.addEdge(v1, v2);
+        graph.addEdge(v2, v3);
+        graph.addEdge(v3, v1);
+        graph.addEdge(v3, v4);
+        System.out.print(graph.toString());
+        
     }
 }

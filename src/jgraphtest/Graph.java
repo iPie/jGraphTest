@@ -1,12 +1,13 @@
 package jgraphtest;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Directed graph implementation. Library is under construction.
  *
- * @version 0.1b
+ * @version 0.2b
  * @author iPie
  */
 public class Graph {
@@ -38,6 +39,10 @@ public class Graph {
         edges.add(e);
     }
 
+    public void addEdge(Vertex from, Vertex to) {
+        addEdge(from, to, 0);
+    }
+
     @Deprecated
     public void removeEdge() {
     }
@@ -53,24 +58,50 @@ public class Graph {
         return this.rootVertex;
     }
 
-    public void consoleOutput() {
-        StringBuilder strb = new StringBuilder();
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
         for (Vertex v : verticies) {
             String v1 = v.getData().toString();
-            List<Edge> edgeList = v.getOutgoingEdges();
-            for (Edge e : edgeList) {
-                strb.append(v1 + " -> " + e.getTo().getData().toString() + "\n");
+            List<Vertex> verticiesList = v.getOutgoingVerticies();
+            for (Vertex vertex : verticiesList) {
+                sb.append(v1);
+                sb.append(" -> ");
+                sb.append(vertex.getData().toString());
+                sb.append("\n");
             }
         }
-        System.out.println(strb);
+        return sb.toString();
     }
 
-    @Deprecated
-    private void visit() {
+    public void depthFirstSearch(Vertex vertex, List<Vertex> output) {
+        vertex.setVisited(true);
+        for (Vertex v : verticies) {
+            if (!v.isVisited()) {
+                this.depthFirstSearch(v, output);
+            }
+        }
+        output.add(vertex);
     }
 
-    @Deprecated
-    private void topologicalSort() {
+    public String topologicalSort() {
+        for (Vertex v : verticies) {
+            v.setVisited(false);
+        }
+        List<Vertex> sortedVerticies = new ArrayList<>();
+
+        for (Vertex vertex : verticies) {
+            if (!vertex.isVisited()) {
+                depthFirstSearch(vertex, sortedVerticies);
+            }
+        }
+        Collections.reverse(sortedVerticies);
+        StringBuilder sb = new StringBuilder();
+        for (Vertex v : sortedVerticies) {
+            sb.append(v.getData().toString());
+            sb.append(", ");
+        }
+        sb.delete(sb.length() - 2, sb.length());
+        return sb.toString();
     }
 
     @Deprecated
@@ -83,11 +114,13 @@ class Edge {
     private Vertex from;
     private Vertex to;
     private int cost;
+    private boolean visited;
 
     public Edge(Vertex from, Vertex to, int cost) {
         this.from = from;
         this.to = to;
         this.cost = cost;
+        visited = false;
     }
 
     public Vertex getTo() {
@@ -101,6 +134,14 @@ class Edge {
     public int getCost() {
         return cost;
     }
+
+    public void setVisited(boolean value) {
+        visited = value;
+    }
+
+    public boolean isVisited() {
+        return visited;
+    }
 }
 
 class Vertex<T> {
@@ -108,11 +149,14 @@ class Vertex<T> {
     private List<Edge> incomingEdges;
     private List<Edge> outgoingEdges;
     private T data;
+    //private String color;
+    private boolean visited;
 
     public Vertex(T data) {
         incomingEdges = new ArrayList<>();
         outgoingEdges = new ArrayList<>();
         this.data = data;
+        visited = false;
     }
 
     public T getData() {
@@ -135,11 +179,27 @@ class Vertex<T> {
         return outgoingEdges;
     }
 
-    @Deprecated
-    public void setColor() {
+    public List<Vertex> getIncomingVerticies() {
+        List<Vertex> incomingVerticies = new ArrayList<>();
+        for (Edge e : incomingEdges) {
+            incomingVerticies.add(e.getFrom());
+        }
+        return incomingVerticies;
     }
 
-    @Deprecated
-    public void getColor() {
+    public List<Vertex> getOutgoingVerticies() {
+        List<Vertex> outgoingVerticies = new ArrayList<>();
+        for (Edge e : outgoingEdges) {
+            outgoingVerticies.add(e.getTo());
+        }
+        return outgoingVerticies;
+    }
+
+    public void setVisited(boolean value) {
+        visited = value;
+    }
+
+    public boolean isVisited() {
+        return visited;
     }
 }
