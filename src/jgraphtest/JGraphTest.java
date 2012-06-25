@@ -21,7 +21,6 @@ public class JGraphTest {
         graph.addEdge(v3, v1);
         graph.addEdge(v3, v4);
         // Output graph as a string
-        System.out.print(graph.toString());
-        
+        System.out.print(graph.toString());        
     }
 }

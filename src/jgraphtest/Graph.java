@@ -109,7 +109,7 @@ public class Graph {
         List<Vertex> sortedGraph = new ArrayList<>();
         for (Vertex v : verticies) {
             v.setVisited(false);
-            if (v.getIncomingEdges() == null) {
+            if (v.getIncomingEdges().isEmpty()) {
                 startVerticies.add(v);
             }
         }
@@ -120,12 +120,10 @@ public class Graph {
             Vertex v = startVerticies.pop();
             sortedGraph.add(v);
             List<Edge> outgoingEdges = v.getOutgoingEdges();
-            if (outgoingEdges != null) {
-                for (Edge e : outgoingEdges) {
-                    e.setVisited(true);
-                    if (!hasUnvisitedIncomingEdges(e.getTo())) {
-                        startVerticies.push(e.getTo());
-                    }
+            for (Edge e : outgoingEdges) {
+                e.setVisited(true);
+                if (!hasUnvisitedIncomingEdges(e.getTo())) {
+                    startVerticies.push(e.getTo());
                 }
             }
         }
@@ -235,19 +233,12 @@ class Vertex<T> {
     }
 
     public List<Edge> getIncomingEdges() {
-        if (!incomingEdges.isEmpty()) {
-            return incomingEdges;
-        } else {
-            return null;
-        }
+        return incomingEdges;
+
     }
 
     public List<Edge> getOutgoingEdges() {
-        if (!outgoingEdges.isEmpty()) {
-            return outgoingEdges;
-        } else {
-            return null;
-        }
+        return outgoingEdges;
     }
 
     public List<Vertex> getIncomingVerticies() {
@@ -256,6 +247,7 @@ class Vertex<T> {
             incomingVerticies.add(e.getFrom());
         }
         return incomingVerticies;
+
     }
 
     public List<Vertex> getOutgoingVerticies() {
