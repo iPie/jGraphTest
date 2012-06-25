@@ -13,13 +13,14 @@ public class JGraphTest {
         // Add verticies to graph
         graph.addVertex(v1);
         graph.addVertex(v2);
-        graph.addVertex(v3);
+        graph.addVertex(v3);        
         graph.addVertex(v4);
-        // Add edges verticies
+        // Add edges between verticies
         graph.addEdge(v1, v2);
         graph.addEdge(v2, v3);
         graph.addEdge(v3, v1);
         graph.addEdge(v3, v4);
+        // Output graph as a string
         System.out.print(graph.toString());
         
     }
